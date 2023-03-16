@@ -88,3 +88,52 @@ def test_check_funds_over():
     card = Category("Credit Card Reserved Funds")
     card.deposit(100)
     assert card.check_funds(150) == False
+
+# Test 15: Category instance has a "withdraw" method
+def test_category_withdraw_exists():
+    dryclean = Category("Event Prep")
+    assert hasattr(dryclean, "withdraw")
+
+# Test 16: withdraw returns False if there aren't enough funds to cover 
+# amount passed
+def test_withdraw_overdraw_attempt():
+    movies = Category("Movies")
+    movies.deposit(15)
+    assert movies.withdraw(28.45) == False 
+
+# Test 17: withdraw returns True if available funds can cover the withdrawal
+def test_withdraw_sufficient_funds():
+    home = Category("Home Improvement")
+    home.deposit(5749.36)
+    assert home.withdraw(2275.20)
+
+# Test 18: withdraw when successful adds an item to the ledger
+def test_withdraw_ledger_update():
+    car = Category("Car Repairs, Insurance, Etc.")
+    deposit = 2500
+    car.deposit(deposit)
+    length_after_deposit = len(car.ledger)
+    withdrawal = 865.39
+    car.withdraw(withdrawal)
+    length_after_withdrawal = len(car.ledger)
+    assert length_after_withdrawal == length_after_deposit + 1
+
+# Test 19: withdraw when successful adds a negative value to the ledger
+def test_withdraw_balance_update():
+    car = Category("Car Repairs, Insurance, Etc.")
+    deposit = 2500
+    car.deposit(deposit)
+    withdrawal = 865.39
+    car.withdraw(withdrawal)
+    assert car.get_balance() == deposit - withdrawal
+
+# Test 20: description passed to withdraw should appear on the item in the 
+# ledger
+def test_withdraw_ledger_has_description():
+    car = Category("Car Repairs, Insurance, Etc.")
+    deposit = 2500
+    car.deposit(deposit)
+    withdrawal = 865.39
+    description = "Replaced windshield"
+    car.withdraw(withdrawal, description)
+    assert car.ledger[-1]["description"] == description
