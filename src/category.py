@@ -15,6 +15,14 @@ class Category():
         else:
             return False
 
+    def transfer(self, amount, destination):
+        if self.check_funds(amount):
+            self.withdraw(amount)
+            destination.deposit(amount)
+            return True
+        else:
+            return False
+
     def get_balance(self):
         balance = 0.0
         for item in self.ledger:
