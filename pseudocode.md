@@ -99,10 +99,10 @@ Design an application in Python that tracks various categories of a budget. Crea
   - Procedure:
     1. start **check_funds**
     2. get *amount*
-    3. call **get_balance** and store its value in *balance*
-    4. if *amount* is less than or equal to *balance*
+    3. call **get_balance** 
+    4. if *amount* is less than or equal to the returned value of **get_balance**
        1. return `True`
     5. else
-       2. return `False`
+       1. return `False`
     6. endif
     7. end **check_funds**
