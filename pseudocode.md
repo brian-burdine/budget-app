@@ -31,16 +31,16 @@ Design an application in Python that tracks various categories of a budget. Crea
   - Defines a string using the object's properties when the object is used as a string, like in a `print` statement
   - Procedure:
     1. start __str__
-    2. init *str* as the object's *name*, centered between asterisks (*) until it fills 30 characters, plus a new line character (\n)
+    2. init *cat_str* as the object's *name*, centered between asterisks (*) until it fills 30 characters, plus a new line character (\n)
     3. for every item in *ledger*
        1. init *new_line* as the item's *description* followed by *amount*, formatted to have two decimal places
-       2. add *new_line* and a new line character to *str*
+       2. add *new_line* and a new line character to *cat_str*
        3. **TO-DO**: figure out how to constain or pad the *description* so that *new_line* is 30 characters long
     4. endfor
     5. init *final_line* as "Total:" 
     6. call **get_balance**, add the result formatted to have two decimal places to *final_line*
-    6. add *final_line* to *str*
-    7. return *str*
+    6. add *final_line* to *cat_str*
+    7. return *cat_str*
     8. end __str__
 - **deposit**
   - Receives an *amount* and optionally a *description* as an argument

@@ -6,6 +6,16 @@ class Category():
         self.name = name
         self.ledger = []
     
+    # Defines a format for the object to be printed
+    def __str__(self):
+        cat_str = self.name.center(30, "*") + "\n"
+        for item in self.ledger:
+            new_line = f'{item["description"]} {item["amount"]:.2f}'
+            cat_str += new_line + "\n"
+        final_line = f"Total: ${self.get_balance():.2f}"
+        cat_str += final_line
+        return cat_str
+
     # Takes an amount and optionally a description and adds a transaction item 
     # to the ledger
     def deposit(self, amount, description = ""):
