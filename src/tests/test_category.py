@@ -220,3 +220,14 @@ def test_transfer_ledger_description_destination():
     last_item = savings.ledger[-1]
     transfer_from_source = "Transfer from " + source_name
     assert last_item["description"] == transfer_from_source
+
+# Test 28: Category instance has a "__str__" method (this might always be true)
+def test_category_str_method_exists():
+    games = Category("Gaming Budget")
+    assert hasattr(games, "__str__")
+
+# Test 29: The first line of the str output of Category is 30 characters long
+def test_str_line1_30_characters():
+    games = Category("Gaming Budget")
+    s = games.__str__()
+    assert s.find("\n") == 30
