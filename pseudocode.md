@@ -84,11 +84,10 @@ Design an application in Python that tracks various categories of a budget. Crea
   - Procedure:
     1. start **transfer**
     2. get *amount* and *destination*
-    3. call **check_funds** with *amount* as an argument
-    4. if **check_funds** returns `True`
-       1. call **withdraw** on the current object, with *amount* and "Transfer to (*destination*'s *name*)" as arguments
-       2. call **deposit** on the *destination* object, with *amount* and "Transfer from (current object's *name*) as arguments
-       3. return `True`
+    3. call **withdraw** on the current object, with *amount* and "Transfer to (*destination*'s *name*)" as arguments
+    4. if **withdraw** returns `True`
+       1. call **deposit** on the *destination* object, with *amount* and "Transfer from (current object's *name*) as arguments
+       2. return `True`
     5. else
        1. return `False`
     6. endif

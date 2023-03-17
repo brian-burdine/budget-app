@@ -137,3 +137,86 @@ def test_withdraw_ledger_has_description():
     description = "Replaced windshield"
     car.withdraw(withdrawal, description)
     assert car.ledger[-1]["description"] == description
+
+# Test 21: Category instance has a "transfer" method
+def test_category_transfer_exists():
+    checking = Category("Checking Account")
+    assert hasattr(checking, "transfer")
+
+# Test 22: transfer returns False if passed amount exceeds available funds
+def test_transfer_overdraw_attempt():
+    checking = Category("Checking Account")
+    savings = Category("Savings Account")
+    deposit = 200
+    checking.deposit(deposit)
+    transfer = 500
+    assert checking.transfer(transfer, savings) == False
+
+# Test 23: transfer returns True if available funds cover passed amount
+def test_transfer_sufficient_funds():
+    checking = Category("Checking Account")
+    savings = Category("Savings Account")
+    deposit = 500
+    checking.deposit(deposit)
+    transfer = 200
+    assert checking.transfer(transfer, savings)
+
+# Test 24: transfer when successful adds a withdrawal to the ledger of the 
+# source Category
+def test_transfer_ledger_update_source():
+    checking = Category("Checking Account")
+    savings = Category("Savings Account")
+    deposit = 500
+    checking.deposit(deposit)
+    length_after_deposit = len(checking.ledger)
+    transfer = 200
+    checking.transfer(transfer, savings)
+    length_after_transfer = len(checking.ledger)
+    last_item = checking.ledger[-1]
+    assert length_after_transfer == length_after_deposit + 1 \
+        and last_item["amount"] < 0
+
+# Test 25: transfer when successful adds a deposit to the destination 
+# Category's ledger
+def test_transfer_ledger_update_destination():
+    checking = Category("Checking Account")
+    savings = Category("Savings Account")
+    deposit = 500
+    checking.deposit(deposit)
+    transfer = 200
+    length_before_transfer = len(savings.ledger)
+    checking.transfer(transfer, savings)
+    length_after_transfer = len(savings.ledger)
+    last_item = savings.ledger[-1]
+    assert length_after_transfer == length_before_transfer + 1 \
+        and last_item["amount"] == transfer
+
+# Test 26: transfer when successful adds a description of 
+# "Transfer to (destination name)" to the transaction in the source's ledger
+def test_transfer_ledger_description_source():
+    source_name = "Checking Account"
+    checking = Category(source_name)
+    destination_name = "Savings Account"
+    savings = Category(destination_name)
+    deposit = 500
+    checking.deposit(deposit)
+    transfer = 200
+    checking.transfer(transfer, savings)
+    last_item = checking.ledger[-1]
+    transfer_to_dest = "Transfer to " + destination_name
+    assert last_item["description"]  == transfer_to_dest
+
+# Test 27: transfer when successful adds a description of 
+# "Transfer from (source name)" to the transaction in the destination's ledger
+def test_transfer_ledger_description_destination():
+    source_name = "Checking Account"
+    checking = Category(source_name)
+    destination_name = "Savings Account"
+    savings = Category(destination_name)
+    deposit = 500
+    checking.deposit(deposit)
+    transfer = 200
+    checking.transfer(transfer, savings)
+    last_item = savings.ledger[-1]
+    transfer_from_source = "Transfer from " + source_name
+    assert last_item["description"] == transfer_from_source
